@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Railblaze — NYC Transit, Blazing Fast</title>
+  <meta name="description" content="Railblaze is the fastest way to check NYC subway, bus, ferry, PATH, LIRR and Citi Bike status — all in one app.">
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <script async src="https://breezemetrics.pubaxis.com/analytics.js" data-site="railblaze.nyc"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #4DA8DA;
+      --blue-light: #7EC8E3;
+      --blue-glow: rgba(77, 168, 218, 0.15);
+      --bg: #000;
+      --text: #fff;
+      --text-muted: #999;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    nav .logo img {
+      height: 36px;
+      width: 36px;
+      object-fit: contain;
+    }
+
+    nav .logo span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    nav a.nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    nav a.nav-link:hover {
+      color: var(--blue-light);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 0 40px rgba(77, 168, 218, 0.3));
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--blue-light), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      white-space: nowrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge-link img {
+      height: 54px;
+      transition: opacity 0.2s;
+    }
+
+    .badge-link:hover img {
+      opacity: 0.85;
+    }
+
+    /* Features */
+    .features {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .features .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 4rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(77, 168, 218, 0.3);
+      background: rgba(77, 168, 218, 0.04);
+    }
+
+    .feature-card .icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Screenshots */
+    .screenshots {
+      padding: 6rem 2rem;
+      overflow: hidden;
+    }
+
+    .screenshots h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .screenshots .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 4rem;
+    }
+
+    .screenshot-scroll {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .screenshot-item {
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    .screenshot-item img {
+      width: 220px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .screenshot-item img:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 80px rgba(77, 168, 218, 0.15);
+    }
+
+    .screenshot-item .caption {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Live Activity spotlight */
+    .widget-section {
+      padding: 6rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .widget-section img {
+      width: 260px;
+      border-radius: 32px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+
+    .widget-text h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .widget-text h2 .accent {
+      background: linear-gradient(135deg, var(--blue-light), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .widget-text p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--blue-light);
+    }
+
+    footer .copyright {
+      color: #555;
+      font-size: 0.8rem;
+    }
+
+    footer .copyright a {
+      font-size: 0.8rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .hero-logo { width: 100px; height: 100px; }
+      .hero p { font-size: 1.05rem; }
+
+      .screenshot-item img { width: 160px; }
+
+      .widget-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+        padding: 4rem 1.5rem;
+      }
+      .widget-section img { width: 200px; }
+
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="assets/images/logo.png" alt="Railblaze">
+      <span>Railblaze</span>
+    </a>
+    <div>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="privacy-policy.html" class="nav-link" style="margin-left: 1.5rem;">Privacy Policy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <img src="assets/images/logo.png" alt="Railblaze logo" class="hero-logo">
+    <h1>NYC Transit, <span class="accent">Blazing Fast</span></h1>
+    <p>Subway. Bus. Ferry. PATH. LIRR. Citi Bike. One app that knows them all.</p>
+  </section>
+
+  <section class="features">
+    <h2>Know Before You Go</h2>
+    <p class="subtitle">Every transit system in New York City. Zero ads. Zero clutter. Just go.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">📍</div>
+        <h3>Nearby</h3>
+        <p>Every station, stop, dock and terminal around you. Real-time arrivals, instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⭐</div>
+        <h3>Favorites</h3>
+        <p>Your commute, one tap away. Pin the stops you hit every day and see what matters first.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔍</div>
+        <h3>Search</h3>
+        <p>Subway, bus, ferry, PATH, LIRR, Citi Bike — the entire city's transit network at your fingertips.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🚨</div>
+        <h3>Service Alerts</h3>
+        <p>Delays, reroutes, suspensions — filtered by line. Know what's broken before it breaks your plans.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🚲</div>
+        <h3>Citi Bike</h3>
+        <p>Bikes, e-bikes and open docks. Live fill levels so you never show up to an empty station or haul your bike to a full one.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📱</div>
+        <h3>Live Activities</h3>
+        <p>Your trip, updating in real time on your lock screen and Dynamic Island. Glance down, stay informed, keep moving.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="screenshots">
+    <h2>See It in Action</h2>
+    <p class="subtitle">Dark by design. Fast by obsession.</p>
+    <div class="screenshot-scroll">
+      <div class="screenshot-item">
+        <img src="assets/images/screenshot-nearby.png" alt="Nearby stops view">
+        <div class="caption">Nearby</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/screenshot-favorites.png" alt="Favorites view">
+        <div class="caption">Favorites</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/screenshot-search.png" alt="Search view">
+        <div class="caption">Search</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/screenshot-alerts.png" alt="Service alerts view">
+        <div class="caption">Alerts</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="widget-section">
+    <img src="assets/images/screenshot-widget.png" alt="Live Activity on lock screen">
+    <div class="widget-text">
+      <h2>Track Your Trip, <span class="accent">Live</span></h2>
+      <p>Tap Track on any upcoming departure and your next arrival lands right on your lock screen and Dynamic Island. Live Activities keep it updated in real time — glanceable, always fresh, no need to keep the app open.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+    <p class="copyright">&copy; 2026 Railblaze by <a href="https://shawnfarner.com" target="_blank" rel="noopener">Shawn Farner</a>. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
