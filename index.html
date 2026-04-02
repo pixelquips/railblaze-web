@@ -129,7 +129,17 @@
       color: var(--text-muted);
       max-width: 720px;
       white-space: nowrap;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .app-store-badge {
+      height: 54px;
+      margin-bottom: 2rem;
+      transition: opacity 0.2s;
+    }
+
+    .app-store-badge:hover {
+      opacity: 0.8;
     }
 
     .badge-link img {
@@ -361,6 +371,9 @@
     <img src="assets/images/logo.png" alt="Railblaze logo" class="hero-logo">
     <h1>NYC Transit, <span class="accent">Blazing Fast</span></h1>
     <p>Subway. Bus. Ferry. PATH. LIRR. Citi Bike. One app that knows them all.</p>
+    <a href="https://apps.apple.com/us/app/railblaze/id6760515022" target="_blank" rel="noopener noreferrer">
+      <img src="download-on-app-store.png" alt="Download on the App Store" class="app-store-badge">
+    </a>
   </section>
 
   <section class="features">
