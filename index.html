@@ -5,26 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Railblaze — NYC transit, blazing fast.</title>
   <meta name="description" content="Railblaze is the fastest way to check NYC subway, bus, ferry, PATH, LIRR and Citi Bike status — all in one app.">
-  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/railblaze-icon.png">
   <script async src="https://breezemetrics.pubaxis.com/analytics.js" data-site="railblaze.nyc"></script>
   <style>
+    /* The app's own fonts (RBFont), bundled so nothing loads from a third
+       party: condensed Archivo for display type, Inter for everything else. */
+    @font-face { font-family: "Archivo Condensed"; src: url("assets/fonts/ArchivoCond-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --blue: #4DA8DA;
-      --blue-light: #7EC8E3;
-      --blue-glow: rgba(77, 168, 218, 0.15);
+      /* The app's palette (RBColor): black canvas, white text, greys as
+         white at reduced opacity, and one accent, the amber signal. */
+      --signal: #FFB800;
+      --signal-glow: rgba(255, 184, 0, 0.10);
       --bg: #000;
       --text: #fff;
-      --text-muted: #999;
+      --text-muted: rgba(255, 255, 255, 0.56);
+      --text-faint: rgba(255, 255, 255, 0.38);
+      --hairline: rgba(255, 255, 255, 0.14);
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Display type, as in the app: condensed Archivo, single bold cut. */
+    h1, h2, h3, nav .logo span {
+      font-family: "Archivo Condensed", "Arial Narrow", sans-serif;
+      font-weight: 700;
+      font-synthesis: none;
     }
 
     /* Nav */
@@ -41,7 +59,7 @@
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid var(--hairline);
     }
 
     nav .logo {
@@ -56,10 +74,12 @@
       height: 36px;
       width: 36px;
       object-fit: contain;
+      border-radius: 22.5%;
+      border: 1px solid var(--hairline);
     }
 
     nav .logo span {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: 0.02em;
     }
@@ -72,7 +92,7 @@
     }
 
     nav a.nav-link:hover {
-      color: var(--blue-light);
+      color: var(--signal);
     }
 
     /* Hero */
@@ -96,7 +116,7 @@
       transform: translateX(-50%);
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+      background: radial-gradient(circle, var(--signal-glow) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -105,23 +125,21 @@
       height: 140px;
       object-fit: cover;
       margin-bottom: 2rem;
-      border-radius: 31.25%;
-      box-shadow: 0 0 40px rgba(77, 168, 218, 0.3);
+      border-radius: 22.5%;
+      /* The icon is black on black: a hairline edge instead of the old glow. */
+      border: 1px solid var(--hairline);
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
+      font-size: clamp(3rem, 7.5vw, 5.75rem);
+      font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.1;
       margin-bottom: 1rem;
     }
 
     .hero h1 .accent {
-      background: linear-gradient(135deg, var(--blue-light), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--signal);
     }
 
     .hero p {
@@ -152,14 +170,14 @@
 
     /* Features */
     .features {
-      padding: 6rem 2rem;
+      padding: 4.5rem 2rem 1.5rem;
       max-width: 1100px;
       margin: 0 auto;
     }
 
     .features h2 {
       text-align: center;
-      font-size: 2rem;
+      font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 1rem;
     }
@@ -169,35 +187,41 @@
       color: var(--text-muted);
       font-size: 1.1rem;
       max-width: 600px;
-      margin: 0 auto 4rem;
+      margin: 0 auto 2rem;
     }
 
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      gap: 1rem;
     }
 
     .feature-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.25rem 1.5rem;
       transition: border-color 0.3s, background 0.3s;
     }
 
     .feature-card:hover {
-      border-color: rgba(77, 168, 218, 0.3);
-      background: rgba(77, 168, 218, 0.04);
+      border-color: rgba(255, 184, 0, 0.35);
+      background: rgba(255, 184, 0, 0.04);
     }
 
     .feature-card .icon {
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
+      float: left;
+      margin: -0.1rem 0.7rem 0 0;
+    }
+
+    .feature-card .icon svg {
+      width: 28px;
+      height: 28px;
+      display: block;
     }
 
     .feature-card h3 {
-      font-size: 1.15rem;
+      font-size: 1.45rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -210,13 +234,13 @@
 
     /* Screenshots */
     .screenshots {
-      padding: 6rem 2rem;
+      padding: 5rem 2rem 3rem;
       overflow: hidden;
     }
 
     .screenshots h2 {
       text-align: center;
-      font-size: 2rem;
+      font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 1rem;
     }
@@ -225,14 +249,14 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 1.1rem;
-      margin-bottom: 4rem;
+      margin-bottom: 2.75rem;
     }
 
     .screenshot-scroll {
       display: flex;
       gap: 2rem;
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -242,8 +266,14 @@
       flex: 0 0 auto;
     }
 
+    /* Images carry width/height attributes so their space is reserved
+       before they load; height:auto keeps the aspect ratio from those. */
+    .screenshot-item img, .widget-section img { height: auto; }
+
+    /* One row per set at every desktop width: four phones (or five
+       watches) share the row instead of wrapping onto a second one. */
     .screenshot-item img {
-      width: 220px;
+      width: min(200px, calc((100vw - 10rem) / 4));
       border-radius: 24px;
       border: 2px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -252,7 +282,7 @@
 
     .screenshot-item img:hover {
       transform: translateY(-8px);
-      box-shadow: 0 30px 80px rgba(77, 168, 218, 0.15);
+      box-shadow: 0 30px 80px rgba(255, 184, 0, 0.12);
     }
 
     .screenshot-item .caption {
@@ -264,7 +294,7 @@
 
     /* Live Activity spotlight */
     .widget-section {
-      padding: 6rem 2rem;
+      padding: 5rem 2rem 3rem;
       max-width: 900px;
       margin: 0 auto;
       display: flex;
@@ -281,16 +311,13 @@
     }
 
     .widget-text h2 {
-      font-size: 2rem;
+      font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 1rem;
     }
 
     .widget-text h2 .accent {
-      background: linear-gradient(135deg, var(--blue-light), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--signal);
     }
 
     .widget-text p {
@@ -299,9 +326,82 @@
       line-height: 1.6;
     }
 
+    /* Platforms */
+    .platforms {
+      padding: 5rem 2rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .platforms h2 {
+      text-align: center;
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .platforms .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.75rem 2rem;
+    }
+
+    .platform-item {
+      border-top: 1px solid var(--hairline);
+      padding-top: 1.25rem;
+    }
+
+    /* Device icons: rounded rectangles only, a white outline with one
+       amber accent each, like the app's single-accent palette. */
+    .platform-item .icon {
+      margin-bottom: 0.75rem;
+    }
+
+    .platform-item .icon svg {
+      width: 44px;
+      height: 44px;
+      display: block;
+    }
+
+    /* Shared by the device and feature icons. */
+    .glyph .stroke {
+      fill: none;
+      stroke: var(--text);
+      stroke-width: 1.75;
+    }
+
+    .glyph .hairline-stroke {
+      fill: none;
+      stroke: var(--text-faint);
+      stroke-width: 1;
+    }
+
+    .glyph .accent { fill: var(--signal); }
+    .glyph .faint { fill: var(--text-faint); }
+    .glyph .faint-fill { fill: var(--hairline); }
+    .glyph .ink { fill: #000; }
+    .glyph .stroke.solid { fill: var(--bg); }
+
+    .platform-item h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .platform-item p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
     /* Footer */
     footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid var(--hairline);
       padding: 3rem 2rem;
       text-align: center;
     }
@@ -321,11 +421,11 @@
     }
 
     footer a:hover {
-      color: var(--blue-light);
+      color: var(--signal);
     }
 
     footer .copyright {
-      color: #555;
+      color: var(--text-faint);
       font-size: 0.8rem;
     }
 
@@ -334,14 +434,281 @@
     }
 
     /* Responsive */
+
+    /* Section snapping: each section fills the screen and a scroll or
+       swipe settles on the next one. Mandatory on desktop, where every
+       section fits; proximity on small screens, where the stacked feature
+       cards are taller than the screen and mandatory would skip past them. */
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .snap {
+      min-height: 100vh;
+      min-height: 100svh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    footer { scroll-snap-align: end; }
+
+    /* The Live section keeps its screenshot beside the text. */
+    .widget-section.snap {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    @media (max-width: 768px), (max-height: 700px) {
+      html { scroll-snap-type: y proximity; }
+      .snap { scroll-snap-stop: normal; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    /* On-page nav */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a.nav-link.active {
+      color: var(--text);
+    }
+
+    .section-dots {
+      position: fixed;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .section-dots a {
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .section-dots a:hover { background: var(--text); }
+
+    .section-dots a.active {
+      background: var(--signal);
+      transform: scale(1.4);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links .section-link { display: none; }
+      .section-dots { right: 0.6rem; }
+    }
+
+    /* iPhone / iPhone Duo switch, styled like the app's filter pills. */
+    .device-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: -2rem auto 2.25rem;
+    }
+
+    .device-toggle button {
+      font: 600 0.8rem/1 "Inter", sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 0.7rem 1.15rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .device-toggle button:hover { border-color: var(--text-faint); }
+
+    .device-toggle button[aria-selected="true"] {
+      background: var(--text);
+      color: #000;
+      border-color: var(--text);
+    }
+
+    /* All three sets share one grid cell, so the stage is always as tall as
+       the tallest set and switching tabs never moves anything below it.
+       Inactive sets fade out and are made inert (no focus, no clicks). */
+    .shots-stage {
+      display: grid;
+      align-items: center;
+    }
+
+    .shots-stage > .screenshot-scroll {
+      grid-area: 1 / 1;
+      width: 100%;
+      transition: opacity 0.35s ease, visibility 0.35s;
+    }
+
+    .shots-stage > .screenshot-scroll:not(.is-active) {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .shots-stage > .screenshot-scroll { transition: none; }
+    }
+
+    /* The Duo shots are landscape: one row of four on desktop so the section
+       still fits a single screen, 2x2 on mid widths, stacked on phones. */
+    .screenshot-scroll.duo {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      gap: 1.25rem 1.25rem;
+    }
+
+    /* Watch shots are small and nearly square; corners echo the display. */
+    .screenshot-scroll.watch .screenshot-item img {
+      width: min(190px, calc((100vw - 12rem) / 5));
+      border-radius: 40px;
+    }
+
+    @media (max-width: 1100px) {
+      .screenshot-scroll.duo { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; }
+    }
+
+    .screenshot-scroll.duo .screenshot-item img {
+      width: 100%;
+      border-radius: 16px;
+    }
+
+    .screenshot-scroll.duo .screenshot-item .caption { margin-top: 0.6rem; }
+
+    /* Lightbox: click a screenshot to see it large. Click the enlarged image
+       to view it at actual size (scrollable); click again to fit. */
+    .screenshot-item img, .widget-section img { cursor: zoom-in; }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      transition: opacity 0.2s;
+      overflow: auto;
+      overscroll-behavior: contain;
+    }
+
+    .lightbox[hidden] { display: none; }
+    .lightbox.open { opacity: 1; }
+
+    .lightbox figure {
+      margin: auto;
+      padding: 4.5rem 1rem 1.5rem;
+      text-align: center;
+    }
+
+    .lightbox img {
+      display: block;
+      max-height: calc(100svh - 7.5rem);
+      max-width: calc(100vw - 2rem);
+      border-radius: 28px;
+      border: 1px solid var(--hairline);
+      cursor: zoom-in;
+      transform: scale(0.96);
+      transition: transform 0.2s;
+    }
+
+    .lightbox.open img { transform: none; }
+
+    .lightbox.zoomed { align-items: flex-start; }
+    .lightbox.zoomed img {
+      max-height: none;
+      max-width: none;
+      width: min(1206px, calc(100vw - 2rem));
+      cursor: zoom-out;
+    }
+
+    .lightbox figcaption {
+      margin-top: 0.9rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .lb-button {
+      position: fixed;
+      z-index: 201;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--hairline);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font: 600 1.3rem/1 "Inter", sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-button[hidden] { display: none; }
+    .lb-button:hover { background: rgba(255, 255, 255, 0.16); }
+    .lb-close { top: 1rem; right: 1rem; }
+    .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lightbox, .lightbox img { transition: none; }
+    }
+
     @media (max-width: 768px) {
       .hero { padding: 7rem 1.5rem 3rem; }
       .hero-logo { width: 100px; height: 100px; }
       .hero p { font-size: 1.05rem; }
 
-      .screenshot-item img { width: 160px; }
+      /* Phones: each set is one swipeable row of similar height, so the
+         stage doesn't have to reserve room for four stacked Duo shots. */
+      .shots-stage { margin: 0 -2rem; }
+      .shots-stage > .screenshot-scroll,
+      .shots-stage > .screenshot-scroll.duo {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 1rem;
+        max-width: none;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 2rem;
+        padding: 12px 2rem 0.5rem;
+        scrollbar-width: none;
+      }
+      .shots-stage > .screenshot-scroll::-webkit-scrollbar { display: none; }
+      .shots-stage .screenshot-item { scroll-snap-align: start; }
+      .screenshot-item img { width: 180px; }
+      .screenshot-scroll.duo .screenshot-item { width: 300px; }
+      .screenshot-scroll.watch .screenshot-item img { width: 180px; border-radius: 36px; }
+      .device-toggle { gap: 0.35rem; }
+      .device-toggle button { font-size: 0.7rem; padding: 0.6rem 0.8rem; letter-spacing: 0.04em; }
 
-      .widget-section {
+      .widget-section, .widget-section.snap {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
@@ -356,90 +723,191 @@
 <body>
 
   <nav>
-    <a href="index.html" class="logo">
-      <img src="assets/images/logo.png" alt="Railblaze">
+    <a href="#top" class="logo">
+      <img src="assets/images/railblaze-icon.png" alt="Railblaze">
       <span>Railblaze</span>
     </a>
-    <div>
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="privacy-policy.html" class="nav-link" style="margin-left: 1.5rem;">Privacy Policy</a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link section-link">Features</a>
+      <a href="#in-action" class="nav-link section-link">In Action</a>
+      <a href="#live" class="nav-link section-link">Live</a>
+      <a href="#devices" class="nav-link section-link">Devices</a>
+      <a href="privacy-policy.html" class="nav-link">Privacy</a>
     </div>
   </nav>
 
-  <section class="hero">
-    <img src="assets/images/logo.png" alt="Railblaze logo" class="hero-logo">
+  <!-- One dot per section; the current one lights up amber. -->
+  <div class="section-dots" role="navigation" aria-label="Page sections">
+    <a href="#top" aria-label="Top"></a>
+    <a href="#features" aria-label="Features"></a>
+    <a href="#in-action" aria-label="In Action"></a>
+    <a href="#live" aria-label="Live"></a>
+    <a href="#devices" aria-label="Devices"></a>
+  </div>
+
+  <section class="hero snap" id="top">
+    <img src="assets/images/railblaze-icon.png" alt="Railblaze logo" class="hero-logo">
     <h1>NYC transit, <span class="accent">blazing fast.</span></h1>
-    <p>Subway. Bus. Ferry. PATH. LIRR. Citi Bike. One app that knows them all.</p>
+    <p>Subway. Bus. Ferry. PATH. LIRR. Metro-North. Citi Bike. One app that knows them all.</p>
     <a href="https://apps.apple.com/us/app/railblaze/id6760515022" target="_blank" rel="noopener noreferrer">
       <img src="assets/images/download-on-app-store.png" alt="Download on the App Store" class="app-store-badge">
     </a>
   </section>
 
-  <section class="features">
+  <section class="features snap" id="features">
     <h2>Know before you go.</h2>
     <p class="subtitle">Every transit system in New York City. Zero ads. Zero clutter. Just go.</p>
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="icon">📍</div>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="5" width="32" height="8" rx="2.5" class="stroke"/><rect x="7" y="7.5" width="3" height="3" rx="1" class="accent"/><rect x="13" y="8.25" width="14" height="1.5" rx="0.75" class="faint"/><rect x="4" y="16" width="32" height="8" rx="2.5" class="stroke"/><rect x="7" y="18.5" width="3" height="3" rx="1" class="faint"/><rect x="13" y="19.25" width="10" height="1.5" rx="0.75" class="faint"/><rect x="4" y="27" width="32" height="8" rx="2.5" class="stroke"/><rect x="7" y="29.5" width="3" height="3" rx="1" class="faint"/><rect x="13" y="30.25" width="12" height="1.5" rx="0.75" class="faint"/></svg></div>
         <h3>Nearby</h3>
-        <p>Every station, stop, dock and terminal around you. Real-time arrivals, instantly.</p>
+        <p>Every station, stop, dock and terminal around you, with real-time arrivals the moment you open the app.</p>
       </div>
       <div class="feature-card">
-        <div class="icon">⭐</div>
-        <h3>Favorites</h3>
-        <p>Your commute, one tap away. Pin the stops you hit every day and see what matters first.</p>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="5" width="28" height="30" rx="4" class="stroke"/><rect x="24" y="3" width="6" height="12" rx="1" class="accent"/><rect x="10" y="20" width="16" height="2" rx="1" class="faint"/><rect x="10" y="25" width="11" height="2" rx="1" class="faint"/></svg></div>
+        <h3>Favorites &amp; Commute</h3>
+        <p>Pin the stops you use every day. Set a morning and evening trip with a leave-by time, and Railblaze tells you when to head out.</p>
       </div>
       <div class="feature-card">
-        <div class="icon">🔍</div>
-        <h3>Search</h3>
-        <p>Subway, bus, ferry, PATH, LIRR, Citi Bike — the entire city's transit network at your fingertips.</p>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="4" width="32" height="32" rx="5" class="stroke"/><rect x="11" y="10" width="2.5" height="18" rx="1.25" class="faint"/><rect x="11" y="25.5" width="19" height="2.5" rx="1.25" class="faint"/><rect x="9" y="13" width="6.5" height="6.5" rx="2" class="accent"/></svg></div>
+        <h3>Live Train Map</h3>
+        <p>Watch every train move across the city in real time, then tap one to follow its trip stop by stop.</p>
       </div>
       <div class="feature-card">
-        <div class="icon">🚨</div>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="18.75" y="5" width="2.5" height="28" rx="1.25" class="faint"/><rect x="18.75" y="5" width="2.5" height="17" rx="1.25" class="accent"/><rect x="16" y="3" width="8" height="5" rx="2" class="stroke solid"/><rect x="16" y="17" width="8" height="5" rx="2" class="stroke solid"/><rect x="14.5" y="30" width="11" height="6" rx="2.5" class="accent"/></svg></div>
+        <h3>Track to Your Stop</h3>
+        <p>Tell it where you're getting off. Railblaze counts down to your train, then your ride, and alerts you before your stop.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="6" width="30" height="28" rx="4" class="stroke"/><rect x="5" y="6" width="30" height="8" rx="4" class="accent"/><rect x="10" y="20" width="20" height="2" rx="1" class="faint"/><rect x="10" y="25" width="13" height="2" rx="1" class="faint"/></svg></div>
         <h3>Service Alerts</h3>
-        <p>Delays, reroutes, suspensions — filtered by line. Know what's broken before it breaks your plans.</p>
+        <p>Delays, reroutes and suspensions, filtered by line. When your line isn't running, Railblaze suggests another way.</p>
       </div>
       <div class="feature-card">
-        <div class="icon">🚲</div>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="6" width="8" height="28" rx="2.5" class="stroke"/><rect x="7" y="22" width="4" height="10" rx="1" class="accent"/><rect x="16" y="6" width="8" height="28" rx="2.5" class="stroke"/><rect x="18" y="12" width="4" height="20" rx="1" class="accent"/><rect x="27" y="6" width="8" height="28" rx="2.5" class="stroke"/><rect x="29" y="29" width="4" height="3" rx="1" class="faint"/></svg></div>
         <h3>Citi Bike</h3>
         <p>Bikes, e-bikes and open docks. Live fill levels so you never show up to an empty station or haul your bike to a full one.</p>
       </div>
       <div class="feature-card">
-        <div class="icon">📱</div>
-        <h3>Live Activities</h3>
-        <p>Your trip, updating in real time on your lock screen and Dynamic Island. Glance down, stay informed, keep moving.</p>
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="5" width="30" height="30" rx="6" class="stroke"/><rect x="9" y="9" width="22" height="22" rx="3.5" class="hairline-stroke"/><rect x="14.5" y="14.5" width="11" height="11" rx="2" class="accent" transform="rotate(45 20 20)"/></svg></div>
+        <h3>Subway Stamps</h3>
+        <p>Collect a stamp at every subway station you pass through, and work your way toward the entire system.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="12" width="20" height="24" rx="4" class="stroke"/><rect x="16" y="4" width="20" height="24" rx="4" class="accent"/><rect x="20" y="10" width="12" height="2" rx="1" class="ink"/><rect x="20" y="15" width="8" height="2" rx="1" class="ink"/></svg></div>
+        <h3>Share a Trip</h3>
+        <p>Send your train to a friend. The link opens right to that trip, so they know exactly when you'll arrive.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="5" width="15" height="30" rx="4" class="stroke"/><rect x="27" y="13" width="9" height="12" rx="3" class="stroke"/><rect x="21" y="18" width="2.5" height="2.5" rx="0.75" class="accent"/><rect x="24.5" y="18" width="2.5" height="2.5" rx="0.75" class="accent"/></svg></div>
+        <h3>Sign in with Apple</h3>
+        <p>Your favorites, alerts, stamps and commute sync across every device you use.</p>
       </div>
     </div>
   </section>
 
-  <section class="screenshots">
+  <section class="screenshots snap" id="in-action">
     <h2>See it in action.</h2>
     <p class="subtitle">A closer look at Railblaze.</p>
-    <div class="screenshot-scroll">
+    <div class="device-toggle" role="tablist" aria-label="Device">
+      <button type="button" role="tab" aria-selected="true" aria-controls="shots-iphone" data-set="iphone">iPhone</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shots-duo" data-set="duo">iPhone Duo</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shots-watch" data-set="watch">Apple Watch</button>
+    </div>
+    <div class="shots-stage">
+    <div class="screenshot-scroll is-active" id="shots-iphone" role="tabpanel" data-set="iphone">
       <div class="screenshot-item">
-        <img src="assets/images/screenshot-nearby.png" alt="Nearby stops view">
+        <img src="assets/images/app-nearby.jpg" width="1206" height="2622" alt="Nearby subway arrivals at Times Square" loading="lazy">
         <div class="caption">Nearby</div>
       </div>
       <div class="screenshot-item">
-        <img src="assets/images/screenshot-favorites.png" alt="Favorites view">
-        <div class="caption">Favorites</div>
+        <img src="assets/images/app-trip.jpg" width="1206" height="2622" alt="A 1 train's trip with its live position on the map" loading="lazy">
+        <div class="caption">Trip</div>
       </div>
       <div class="screenshot-item">
-        <img src="assets/images/screenshot-search.png" alt="Search view">
-        <div class="caption">Search</div>
+        <img src="assets/images/app-live.jpg" width="1206" height="2622" alt="Live map of every subway train in Midtown" loading="lazy">
+        <div class="caption">Live Map</div>
       </div>
       <div class="screenshot-item">
-        <img src="assets/images/screenshot-alerts.png" alt="Service alerts view">
+        <img src="assets/images/app-alerts.jpg" width="1206" height="2622" alt="Subway service alerts filtered by line" loading="lazy">
         <div class="caption">Alerts</div>
       </div>
     </div>
+    <div class="screenshot-scroll duo" id="shots-duo" role="tabpanel" data-set="duo" inert>
+      <div class="screenshot-item">
+        <img src="assets/images/app-duo-nearby.jpg" width="2853" height="2007" alt="Nearby on iPhone Duo: stops on the left, Times Sq-42 St arrivals on the right" loading="lazy">
+        <div class="caption">Nearby</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-duo-trip.jpg" width="2853" height="2007" alt="A trip on iPhone Duo with the live train on the map beside the stop list" loading="lazy">
+        <div class="caption">Trip</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-duo-live.jpg" width="2853" height="2007" alt="Search on iPhone Duo with the live train map filling the wide side" loading="lazy">
+        <div class="caption">Live Map</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-duo-alerts.jpg" width="2853" height="2007" alt="Alerts on iPhone Duo: the list on the left, the full alert on the right" loading="lazy">
+        <div class="caption">Alerts</div>
+      </div>
+    </div>
+    <div class="screenshot-scroll watch" id="shots-watch" role="tabpanel" data-set="watch" inert>
+      <div class="screenshot-item">
+        <img src="assets/images/app-watch-face.jpg" width="416" height="496" alt="Watch face with Railblaze complications: the next downtown 6 at Grand Central, the uptown 1 at Times Square, and Citi Bikes nearby" loading="lazy">
+        <div class="caption">Watch Face</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-watch-stack.jpg" width="416" height="496" alt="Railblaze widgets in the Smart Stack: Grand Central arrivals in minutes, plus the 1 train, an SIM3C express bus and an M14D Select Bus, each with its station and line colour" loading="lazy">
+        <div class="caption">Smart Stack</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-watch-favorites.jpg" width="416" height="496" alt="Favorites on Apple Watch: Times Sq, Grand Central and Union Square" loading="lazy">
+        <div class="caption">Favorites</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-watch-arriving.jpg" width="416" height="496" alt="A 1 train arriving at Times Sq-42 St, highlighted in amber on Apple Watch" loading="lazy">
+        <div class="caption">Arriving</div>
+      </div>
+      <div class="screenshot-item">
+        <img src="assets/images/app-watch-bike.jpg" width="416" height="496" alt="Citi Bike availability at W 42 St and 6 Ave on Apple Watch" loading="lazy">
+        <div class="caption">Citi Bike</div>
+      </div>
+    </div>
+    </div>
   </section>
 
-  <section class="widget-section">
-    <img src="assets/images/screenshot-widget.png" alt="Live Activity on lock screen">
+  <section class="widget-section snap" id="live">
+    <img src="assets/images/app-lock.jpg" width="1206" height="2622" alt="Railblaze Live Activity on the lock screen" loading="lazy">
     <div class="widget-text">
       <h2>Track your trip, <span class="accent">LIVE.</span></h2>
-      <p>Tap Track and your trip lands right on your lock screen and Dynamic Island. Live Activities keep it updated in real time — glanceable and always fresh. No need to keep the app open.</p>
+      <p>Tap Track and pick where you're getting off. Your Live Activity counts down to the train, then shows how many stops are left and alerts you as your stop gets close. It lives on your lock screen and in the Dynamic Island, so the app can stay closed.</p>
+    </div>
+  </section>
+
+  <section class="platforms snap" id="devices">
+    <h2>Everywhere you are.</h2>
+    <p class="subtitle">On your iPhone, on your wrist and on your Home Screen.</p>
+    <div class="platform-grid">
+      <div class="platform-item">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="11" y="3" width="18" height="34" rx="4.5" class="stroke"/><rect x="16.5" y="6.5" width="7" height="2.5" rx="1.25" class="accent"/></svg></div>
+        <h3>iPhone</h3>
+        <p>The whole app, built for one-handed glances on the go.</p>
+      </div>
+      <div class="platform-item">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="3.5" y="6" width="15.5" height="28" rx="3.5" class="stroke"/><rect x="21" y="6" width="15.5" height="28" rx="3.5" class="stroke"/><rect x="24" y="10" width="9.5" height="5" rx="1.5" class="accent"/><rect x="24" y="18" width="9.5" height="2.5" rx="1.25" class="faint"/><rect x="24" y="23" width="6.5" height="2.5" rx="1.25" class="faint"/></svg></div>
+        <h3>iPhone Duo</h3>
+        <p>Open it up for your list and live details side by side. Closed, it's the full app on the front screen.</p>
+      </div>
+      <div class="platform-item">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="13" y="2" width="12" height="7" rx="2" class="faint-fill"/><rect x="13" y="31" width="12" height="7" rx="2" class="faint-fill"/><rect x="9" y="8.5" width="20" height="23" rx="6" class="stroke"/><rect x="30.5" y="16" width="3" height="6" rx="1.5" class="accent"/></svg></div>
+        <h3>Apple Watch</h3>
+        <p>Your favorites on your wrist, live minutes on your watch face and in the Smart Stack, and the train you're tracking right there too.</p>
+      </div>
+      <div class="platform-item">
+        <div class="icon"><svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="4" width="32" height="14.5" rx="4" class="stroke"/><rect x="4" y="21.5" width="14.5" height="14.5" rx="4" class="accent"/><rect x="21.5" y="21.5" width="14.5" height="14.5" rx="4" class="stroke"/></svg></div>
+        <h3>Widgets</h3>
+        <p>Favorite arrivals and your Stamps progress on your Home Screen.</p>
+      </div>
     </div>
   </section>
 
@@ -449,6 +917,177 @@
     </div>
     <p class="copyright">&copy; 2026 Railblaze by <a href="https://shawnfarner.com" target="_blank" rel="noopener">Shawn Farner</a>. All rights reserved.</p>
   </footer>
+
+  <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Screenshot">
+    <figure>
+      <img alt="">
+      <figcaption></figcaption>
+    </figure>
+  </div>
+  <button class="lb-button lb-close" type="button" aria-label="Close" hidden>&#x2715;</button>
+  <button class="lb-button lb-prev" type="button" aria-label="Previous screenshot" hidden>&#x2039;</button>
+  <button class="lb-button lb-next" type="button" aria-label="Next screenshot" hidden>&#x203A;</button>
+
+  <script>
+    // Highlight the section crossing the middle of the screen, in the top
+    // links and the dots. A plain scroll listener rather than
+    // IntersectionObserver, which some embedded browsers never fire.
+    (function () {
+      var links = document.querySelectorAll('.section-link, .section-dots a');
+      var sections = document.querySelectorAll('section.snap');
+      var current = null;
+      function update() {
+        var mid = window.innerHeight / 2;
+        var active = sections[0];
+        sections.forEach(function (sec) {
+          if (sec.getBoundingClientRect().top <= mid) active = sec;
+        });
+        if (active === current) return;
+        current = active;
+        var id = '#' + active.id;
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === id);
+        });
+      }
+      var queued = false;
+      window.addEventListener('scroll', function () {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(function () { queued = false; update(); });
+      }, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })();
+  </script>
+
+  <script>
+    // Screenshot lightbox: arrows/keys step through, swipe on touch, Esc,
+    // backdrop or X closes; clicking the image toggles actual size.
+    (function () {
+      var allThumbs = Array.prototype.slice.call(
+        document.querySelectorAll('.screenshot-item img, .widget-section img'));
+      // Only the screenshots currently shown (the selected device's set).
+      var thumbs = allThumbs;
+      function visibleThumbs() {
+        return allThumbs.filter(function (t) { return !t.closest('[inert]'); });
+      }
+      var box = document.querySelector('.lightbox');
+      var img = box.querySelector('img');
+      var cap = box.querySelector('figcaption');
+      var buttons = document.querySelectorAll('.lb-button');
+      var closeBtn = document.querySelector('.lb-close');
+      var index = 0, opener = null;
+
+      function captionFor(t) {
+        var c = t.parentElement.querySelector('.caption');
+        return c ? c.textContent : t.alt;
+      }
+
+      function show(i) {
+        index = (i + thumbs.length) % thumbs.length;
+        var t = thumbs[index];
+        // Hidden until loaded, so the previous screenshot never flashes.
+        img.style.visibility = 'hidden';
+        img.onload = function () { img.style.visibility = ''; };
+        img.src = t.currentSrc || t.src;
+        if (img.complete) img.style.visibility = '';
+        img.alt = t.alt;
+        cap.textContent = captionFor(t);
+        box.classList.remove('zoomed');
+        box.scrollTop = 0;
+      }
+
+      function open(i, from) {
+        opener = from || null;
+        show(i);
+        box.hidden = false;
+        buttons.forEach(function (b) { b.hidden = false; });
+        document.documentElement.style.overflow = 'hidden';
+        requestAnimationFrame(function () { box.classList.add('open'); });
+        closeBtn.focus();
+      }
+
+      function close() {
+        box.classList.remove('open', 'zoomed');
+        box.hidden = true;
+        buttons.forEach(function (b) { b.hidden = true; });
+        document.documentElement.style.overflow = '';
+        if (opener) opener.focus();
+      }
+
+      function openFrom(t) {
+        thumbs = visibleThumbs();
+        open(thumbs.indexOf(t), t);
+      }
+
+      allThumbs.forEach(function (t) {
+        t.tabIndex = 0;
+        t.setAttribute('role', 'button');
+        t.setAttribute('aria-label', 'View larger: ' + t.alt);
+        t.addEventListener('click', function () { openFrom(t); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFrom(t); }
+        });
+      });
+
+      closeBtn.addEventListener('click', close);
+      document.querySelector('.lb-prev').addEventListener('click', function () { show(index - 1); });
+      document.querySelector('.lb-next').addEventListener('click', function () { show(index + 1); });
+      img.addEventListener('click', function (e) {
+        e.stopPropagation();
+        box.classList.toggle('zoomed');
+      });
+      box.addEventListener('click', function (e) {
+        if (e.target === box || e.target.tagName === 'FIGURE') close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (box.hidden) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(index - 1);
+        else if (e.key === 'ArrowRight') show(index + 1);
+      });
+
+      var startX = null;
+      box.addEventListener('touchstart', function (e) {
+        startX = e.touches.length === 1 ? e.touches[0].clientX : null;
+      }, { passive: true });
+      box.addEventListener('touchend', function (e) {
+        if (startX === null || box.classList.contains('zoomed')) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+        startX = null;
+      });
+    })();
+  </script>
+
+  <script>
+    // iPhone / iPhone Duo / Apple Watch screenshot switch.
+    (function () {
+      var tabs = document.querySelectorAll('.device-toggle [role="tab"]');
+      var panels = document.querySelectorAll('.screenshot-scroll[data-set]');
+      function select(set) {
+        tabs.forEach(function (t) {
+          t.setAttribute('aria-selected', String(t.dataset.set === set));
+        });
+        panels.forEach(function (p) {
+          var on = p.dataset.set === set;
+          p.classList.toggle('is-active', on);
+          p.inert = !on;
+        });
+      }
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () { select(t.dataset.set); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          var list = Array.prototype.slice.call(tabs);
+          var step = e.key === 'ArrowRight' ? 1 : -1;
+          var other = list[(list.indexOf(t) + step + list.length) % list.length];
+          other.focus();
+          select(other.dataset.set);
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>

@@ -5,25 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — Railblaze</title>
   <meta name="description" content="Railblaze privacy policy.">
-  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="icon" type="image/png" href="assets/images/railblaze-icon.png">
   <script async src="https://breezemetrics.pubaxis.com/analytics.js" data-site="railblaze.nyc"></script>
   <style>
+    /* The app's own fonts (RBFont), bundled so nothing loads from a third
+       party: condensed Archivo for display type, Inter for everything else. */
+    @font-face { font-family: "Archivo Condensed"; src: url("assets/fonts/ArchivoCond-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --blue: #4DA8DA;
-      --blue-light: #7EC8E3;
+      /* The app's palette (RBColor): black canvas, white text, greys as
+         white at reduced opacity, and one accent, the amber signal. */
+      --signal: #FFB800;
+      --signal-glow: rgba(255, 184, 0, 0.10);
       --bg: #000;
       --text: #fff;
-      --text-muted: #999;
+      --text-muted: rgba(255, 255, 255, 0.56);
+      --text-faint: rgba(255, 255, 255, 0.38);
+      --hairline: rgba(255, 255, 255, 0.14);
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Display type, as in the app: condensed Archivo, single bold cut. */
+    h1, h2, h3, nav .logo span {
+      font-family: "Archivo Condensed", "Arial Narrow", sans-serif;
+      font-weight: 700;
+      font-synthesis: none;
     }
 
     nav {
@@ -39,7 +58,7 @@
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid var(--hairline);
     }
 
     nav .logo {
@@ -54,10 +73,12 @@
       height: 36px;
       width: 36px;
       object-fit: contain;
+      border-radius: 22.5%;
+      border: 1px solid var(--hairline);
     }
 
     nav .logo span {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: 0.02em;
     }
@@ -70,7 +91,7 @@
     }
 
     nav a.nav-link:hover {
-      color: var(--blue-light);
+      color: var(--signal);
     }
 
     .content {
@@ -80,8 +101,8 @@
     }
 
     .content h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 3.1rem;
+      font-weight: 700;
       margin-bottom: 0.5rem;
     }
 
@@ -92,11 +113,11 @@
     }
 
     .content h2 {
-      font-size: 1.3rem;
+      font-size: 1.6rem;
       font-weight: 600;
       margin-top: 2.5rem;
       margin-bottom: 0.75rem;
-      color: var(--blue-light);
+      color: var(--text);
     }
 
     .content p {
@@ -115,7 +136,7 @@
     }
 
     .content a {
-      color: var(--blue-light);
+      color: var(--signal);
       text-decoration: none;
     }
 
@@ -124,7 +145,7 @@
     }
 
     footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid var(--hairline);
       padding: 3rem 2rem;
       text-align: center;
     }
@@ -137,11 +158,11 @@
     }
 
     footer a:hover {
-      color: var(--blue-light);
+      color: var(--signal);
     }
 
     footer .copyright {
-      color: #555;
+      color: var(--text-faint);
       font-size: 0.8rem;
       margin-top: 1rem;
     }
@@ -155,7 +176,7 @@
 
   <nav>
     <a href="index.html" class="logo">
-      <img src="assets/images/logo.png" alt="Railblaze">
+      <img src="assets/images/railblaze-icon.png" alt="Railblaze">
       <span>Railblaze</span>
     </a>
     <div>
@@ -166,93 +187,91 @@
 
   <main class="content">
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: March 12, 2026</p>
+    <p class="updated">Last updated: November 18, 2026</p>
 
-    <p>Railblaze ("the App") is a transit application designed to help users navigate the New York City rail system. Protecting your privacy is important, and the App is designed to collect as little information as possible.</p>
-    <p>This Privacy Policy explains what information the App collects, how it is used, and how it is protected.</p>
+    <p>Railblaze ("the App") is a transit app for New York City. This policy explains what information the App uses, what reaches Railblaze's servers, and how you can delete it. The short version: you can use Railblaze without an account, your live location never leaves your device, and there are no ads, analytics or tracking.</p>
 
-    <h2>Information We Collect</h2>
-    <p>Railblaze is designed so that most functionality works entirely on your device without transmitting personal data.</p>
+    <h2>Using Railblaze Without an Account</h2>
+    <p>Arrivals, maps, trip details, service alerts and Live Activities all work without signing in. In that case Railblaze keeps no personal information about you on its servers. The only things that reach our servers are the requests needed to show you transit information, described under "Live Activities and Notifications" and "Transit Data" below.</p>
 
-    <h2>Location Data</h2>
-    <p>Railblaze may access your device's location in order to display nearby stations and estimate distances.</p>
+    <h2>Your Location</h2>
+    <p>With your permission, Railblaze uses your device's location to show nearby stations, estimate walking times and award station stamps.</p>
     <ul>
-      <li>Location data is processed entirely on your device</li>
-      <li>Location data is not transmitted to Railblaze servers</li>
-      <li>Location data is not stored by Railblaze</li>
-      <li>Location data is not shared with third parties</li>
+      <li>Your live location is processed on your device and is never sent to Railblaze's servers.</li>
+      <li>Walking times and address search use Apple's map services, which handle those requests under <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>.</li>
+      <li>If you earn stamps while signed in, they are stored with your account (see below).</li>
     </ul>
-    <p>You may disable location access at any time through your device's system settings.</p>
+    <p>You can turn off location access at any time in your device's Settings.</p>
 
-    <h2>Favorites and Preferences</h2>
-    <p>Railblaze allows you to save favorite stations and app preferences.</p>
+    <h2>Accounts (Sign in with Apple)</h2>
+    <p>Favorites, stamps, service alert subscriptions and syncing between your devices require an optional account. Railblaze uses Sign in with Apple only. When you sign in, Railblaze receives and stores:</p>
     <ul>
-      <li>Favorites and preferences are stored locally on your device using UserDefaults</li>
-      <li>If iCloud syncing is enabled on your device, these favorites may sync between your devices through Apple's iCloud services</li>
-      <li>Railblaze does not store this information on its own servers</li>
+      <li>A Railblaze account identifier and the identifier Apple provides for your account</li>
+      <li>Your email address, or the private relay address if you choose "Hide My Email"</li>
+      <li>Your name, if you choose to share it</li>
+      <li>When your account was created and last used</li>
     </ul>
+    <p>Railblaze never receives your Apple ID password.</p>
 
-    <h2>Push Notifications and Live Activity Updates</h2>
-    <p>Railblaze may send push notifications and Live Activity updates.</p>
-    <p>To enable this functionality:</p>
+    <h2>Data Synced to Your Account</h2>
+    <p>While you're signed in, the following is stored on Railblaze's servers so it stays in sync across your devices:</p>
     <ul>
-      <li>Your device provides a push notification device token</li>
-      <li>This token is transmitted to the Railblaze notification server</li>
+      <li><strong>Favorites:</strong> the stations, stops, lines and directions you save</li>
+      <li><strong>Service alert subscriptions:</strong> the lines you want alerts for</li>
+      <li><strong>Commutes:</strong> the morning and evening trips you set up, including station, line, direction, time and days</li>
+      <li><strong>Stamps and trophies:</strong> the stations you've stamped, with when you first and last stamped each one and how many times. Stamps are earned by visiting a station, so this is a record of stations you have been to.</li>
+      <li><strong>Device name:</strong> the name your device reports (on current versions of iOS this is usually just "iPhone"), used to tell your devices apart</li>
     </ul>
-    <p>Important details:</p>
+    <p>If you use Railblaze on Apple Watch, your favorites are sent from your iPhone to your watch over Apple's watch connection. They are not sent to Railblaze's servers again for this.</p>
+
+    <h2>Live Activities and Notifications</h2>
+    <p>To update a Live Activity or send you a notification, Railblaze's server needs your device's push token (a random identifier Apple assigns for delivering notifications) and the details of what to update. This happens whether or not you're signed in.</p>
     <ul>
-      <li>The token does not identify you personally</li>
-      <li>It is not linked to your identity</li>
-      <li>It is used only for sending notifications and Live Activity updates</li>
-      <li>It is not shared with third parties</li>
+      <li><strong>Tracking a train or bus:</strong> the server receives the push token, the station, line, direction and trip, and the time window you're tracking. Records of finished Live Activities are deleted after 7 days.</li>
+      <li><strong>Commute Live Activities:</strong> if you turn on automatic commute tracking, the server stores your commute schedule with your device's push tokens so it can start the Live Activity at the right time.</li>
+      <li><strong>Service alerts:</strong> if you're signed in, your device's push token is linked to your account so alerts for the lines you follow reach all of your devices.</li>
     </ul>
+    <p>Notifications are delivered through Apple's Push Notification service. You can turn notifications off at any time in your device's Settings.</p>
 
-    <h2>In-App Purchases</h2>
-    <p>Railblaze may offer optional in-app purchases.</p>
-    <p>All purchases are processed through Apple's StoreKit system.</p>
+    <h2>Transit Data</h2>
+    <p>To show arrivals and service information, the App requests data for specific stations, lines and trips from Railblaze's servers, from the MTA's public data feeds, and from Citi Bike's public station feed. These requests contain station and line identifiers, not your location or account. Like any internet request, they include your device's IP address, which the receiving service can see.</p>
+
+
+    <h2>What Railblaze Does Not Do</h2>
     <ul>
-      <li>Payment processing is handled entirely by Apple</li>
-      <li>Railblaze does not receive, process, or store payment information such as credit card numbers or billing details</li>
+      <li>No advertising, and no advertising SDKs</li>
+      <li>No third-party analytics or crash-reporting services</li>
+      <li>No tracking across other apps or websites</li>
+      <li>No selling, renting or sharing of your information with third parties for their own use</li>
     </ul>
+    <p>Railblaze does analyze public MTA data on its servers to measure how reliable train arrival predictions are. That analysis uses no information about you.</p>
 
-    <h2>Information We Do Not Collect</h2>
-    <p>Railblaze does not collect or store:</p>
+    <h2>Service Providers</h2>
+    <p>Railblaze's servers run on rented cloud infrastructure, and Apple provides sign-in, notifications and map services. These providers process data only to provide those services.</p>
+
+    <h2>How Long Data Is Kept</h2>
     <ul>
-      <li>Names</li>
-      <li>Email addresses</li>
-      <li>User accounts</li>
-      <li>Phone numbers</li>
-      <li>Payment information</li>
-      <li>Precise location history</li>
+      <li><strong>Account and synced data:</strong> until you delete your account</li>
+      <li><strong>Finished Live Activity records:</strong> 7 days</li>
+      <li><strong>Commute schedules:</strong> until you turn commute tracking off or delete your account</li>
     </ul>
-    <p>The App does not require accounts or logins.</p>
+    <p>Our servers may also keep short-lived technical logs, which can include IP addresses, to keep the service running and secure.</p>
 
-    <h2>Analytics and Tracking</h2>
-    <p>Railblaze does not use analytics services or tracking SDKs.</p>
-    <p>Specifically:</p>
-    <ul>
-      <li>No third-party analytics platforms</li>
-      <li>No advertising SDKs</li>
-      <li>No cross-app tracking</li>
-      <li>No behavioral profiling</li>
-    </ul>
+    <h2>Deleting Your Data</h2>
+    <p>You can delete your account at any time in the App under <strong>Settings &rarr; Delete Account</strong>. This permanently removes your account and everything synced to it: favorites, alert subscriptions, commutes, stamps and trophies, and your devices' links to the account. It also revokes Railblaze's access to your Apple ID. A Live Activity that is running at that moment is allowed to finish, then deleted with other finished Live Activities.</p>
+    <p>You can also stop Railblaze's access from your Apple account settings (Sign in with Apple), or contact us to request access to or deletion of your data.</p>
 
-    <h2>Third-Party Data Sharing</h2>
-    <p>Railblaze does not sell, rent, or share user data with third parties.</p>
-    <p>The App also does not include advertising networks or external tracking technologies.</p>
-
-    <h2>Data Security</h2>
-    <p>Because Railblaze stores minimal information and most data remains on your device, exposure risk is limited.</p>
-    <p>Any infrastructure used for push notifications is protected using standard industry security practices.</p>
+    <h2>Security</h2>
+    <p>Data is sent over encrypted connections, and account requests require a sign-in token stored in your device's Keychain. No system is perfectly secure, but Railblaze keeps as little information as it can.</p>
 
     <h2>Children's Privacy</h2>
-    <p>Railblaze does not knowingly collect personal information from children under 13. Because the App does not collect personal data or require accounts, it is suitable for general audiences.</p>
+    <p>Railblaze is not directed at children under 13 and does not knowingly collect personal information from them. If you believe a child under 13 has created an account, contact us and we will delete it.</p>
 
-    <h2>Changes to This Privacy Policy</h2>
-    <p>This Privacy Policy may be updated from time to time to reflect changes to the App or its features. Updates will be posted with a revised "Last updated" date.</p>
+    <h2>Changes to This Policy</h2>
+    <p>This policy may be updated as the App changes. Updates will be posted here with a new "Last updated" date.</p>
 
     <h2>Contact</h2>
-    <p>If you have questions about this Privacy Policy, you can contact:</p>
+    <p>Questions or requests about this policy:</p>
     <p>Railblaze Support<br><a href="mailto:contact@railblaze.nyc">contact@railblaze.nyc</a></p>
   </main>
 
